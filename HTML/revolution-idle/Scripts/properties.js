@@ -1,0 +1,1 @@
+var _name="Revolution Idle",_version="2.2",_width=600,_height=400,_interval=10,_background="#000";
