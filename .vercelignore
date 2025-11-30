@@ -1,0 +1,9 @@
+.git
+.gitignore
+_LARGE_GAMES_STAGING
+inject_base_tags.py
+stage_large_games.py
+README.md
+task.md
+implementation_plan.md
+walkthrough.md
