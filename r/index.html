@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>cyanide — games</title>
+  <title>—</title>
   <style>
     /* Black & white monochrome theme */
     :root{
@@ -44,58 +44,58 @@
       letter-spacing:0.4px;
       text-transform:lowercase;
     }
-    header .sub{color:var(--muted); font-size:13px}
+    header .o7p8q9{color:var(--muted); font-size:13px}
 
     main{flex:1; display:flex; gap:12px; padding:12px; min-height:0}
 
     /* Sidebar list */
-    .sidebar{
+    .a1b2c3{
       width:360px; max-width:40%;
       background:linear-gradient(0deg, rgba(255,255,255,0.01), transparent);
       border-radius:6px; padding:10px; overflow:auto; height:calc(100vh - 92px);
       border:1px solid var(--border);
     }
-    .search{
+    .d4e5f6{
       display:flex; gap:8px; margin-bottom:8px;
     }
-    .search input{
+    .d4e5f6 input{
       flex:1; padding:8px 10px; border-radius:4px; border:1px solid rgba(255,255,255,0.04);
       background:transparent; color:var(--text); outline:none;
       caret-color:var(--text);
     }
-    .search input::placeholder{ color: #7d7d7d; }
+    .d4e5f6 input::placeholder{ color: #7d7d7d; }
 
-    .btn{
+    .g7h8i9{
       background:transparent;
       border:1px solid rgba(255,255,255,0.04);
       color:var(--muted);
       padding:6px 8px; border-radius:4px; cursor:pointer; font-size:12px;
     }
-    .btn.primary{ border-color:var(--text); color:var(--text); }
+    .g7h8i9.j0k1l2{ border-color:var(--text); color:var(--text); }
 
-    .list{display:flex; flex-direction:column; gap:6px}
-    .game{
+    .m3n4o5{display:flex; flex-direction:column; gap:6px}
+    .p6q7r8{
       display:flex; gap:10px; align-items:center; padding:8px; border-radius:4px;
       cursor:pointer; transition:background 120ms; background:transparent; border:1px solid transparent;
       color:var(--text);
     }
-    .game:hover{ background:var(--highlight); border-color:rgba(255,255,255,0.02) }
-    .game.active{ background:rgba(255,255,255,0.03); border-color:var(--border); }
+    .p6q7r8:hover{ background:var(--highlight); border-color:rgba(255,255,255,0.02) }
+    .p6q7r8.l4m5n6{ background:rgba(255,255,255,0.03); border-color:var(--border); }
 
-    .thumb{width:72px;height:48px;flex:0 0 72px; border-radius:4px; overflow:hidden; background:#050505; display:flex;align-items:center;justify-content:center; border:1px solid rgba(255,255,255,0.02)}
-    .thumb img{width:100%;height:100%;object-fit:cover;display:block; filter:grayscale(100%) contrast(1.02) brightness(0.95); opacity:0.98}
+    .s9t0u1{width:72px;height:48px;flex:0 0 72px; border-radius:4px; overflow:hidden; background:#050505; display:flex;align-items:center;justify-content:center; border:1px solid rgba(255,255,255,0.02)}
+    .s9t0u1 img{width:100%;height:100%;object-fit:cover;display:block; filter:grayscale(100%) contrast(1.02) brightness(0.95); opacity:0.98}
 
-    .meta{flex:1; min-width:0}
-    .meta .title{font-weight:700;color:var(--text); font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-    .meta .line{font-size:12px;color:var(--muted); display:flex; gap:8px; align-items:center; margin-top:4px}
-    .tag{font-size:11px;padding:3px 6px;border-radius:999px;background:transparent; border:1px solid rgba(255,255,255,0.03); color:var(--muted)}
+    .v2w3x4{flex:1; min-width:0}
+    .v2w3x4 .y5z6a7{font-weight:700;color:var(--text); font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+    .v2w3x4 .b8c9d0{font-size:12px;color:var(--muted); display:flex; gap:8px; align-items:center; margin-top:4px}
+    .e1f2g3{font-size:11px;padding:3px 6px;border-radius:999px;background:transparent; border:1px solid rgba(255,255,255,0.03); color:var(--muted)}
 
-    .status-working{ color: #e8e8e8; }
-    .status-bugged{ color: #dcdcdc; }
-    .status-broken{ color: #cfcfcf; }
+    .h4i5j6{ color: #e8e8e8; }
+    .k7l8m9{ color: #dcdcdc; }
+    .n0o1p2{ color: #cfcfcf; }
 
     /* Right content (player) */
-    .player{
+    .q3r4s5{
       flex:1; min-width:0; display:flex; flex-direction:column; gap:8px;
       height:calc(100vh - 92px);
       border:1px solid var(--border);
@@ -103,26 +103,26 @@
       padding:10px;
       background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
     }
-    .info{
+    .t6u7v8{
       display:flex; gap:12px; align-items:center; border-bottom:1px dashed rgba(255,255,255,0.03); padding-bottom:8px;
     }
-    .info .title{font-size:16px; font-weight:700; color:var(--text)}
-    .info .desc{color:var(--muted); font-size:12px}
+    .t6u7v8 .y5z6a7{font-size:16px; font-weight:700; color:var(--text)}
+    .t6u7v8 .w9x0y1{color:var(--muted); font-size:12px}
 
-    .controls{margin-left:auto; display:flex; gap:8px}
-    .frame-wrap{flex:1; border-radius:6px; overflow:hidden; background:#000; display:flex; min-height:0; border:1px solid rgba(255,255,255,0.02)}
+    .z2a3b4{margin-left:auto; display:flex; gap:8px}
+    .c5d6e7{flex:1; border-radius:6px; overflow:hidden; background:#000; display:flex; min-height:0; border:1px solid rgba(255,255,255,0.02)}
     iframe{flex:1;border:0;width:100%;height:100%;display:block;background:#000;color:var(--text)}
 
-    .note{color:var(--muted); font-size:13px}
+    .f8g9h0{color:var(--muted); font-size:13px}
 
     /* small screens */
     @media (max-width:900px){
       main{flex-direction:column}
-      .sidebar{width:100%;height:auto; max-height:300px}
-      .player{height:calc(100vh - 260px)}
+      .a1b2c3{width:100%;height:auto; max-height:300px}
+      .q3r4s5{height:calc(100vh - 260px)}
     }
 
-    .prompt{
+    .i1j2k3{
       font-size:12px;
       color:var(--muted);
       background:transparent;
@@ -136,43 +136,43 @@
 <body>
   <header>
     <h1>cyanide</h1>
-    <div class="sub">games</div>
+    <div class="o7p8q9">games</div>
   </header>
 
   <main>
-    <aside class="sidebar" aria-label="Game list">
-      <div class="prompt">> games</div>
-      <div class="search">
+    <aside class="a1b2c3" aria-label="Game list">
+      <div class="i1j2k3">> ()</div>
+      <div class="d4e5f6">
         <input id="search" placeholder="search..." />
-        <button id="refresh" class="btn" title="Refresh">⟳</button>
+        <button id="refresh" class="g7h8i9" title="Refresh">⟳</button>
       </div>
-      <div id="list" class="list" role="list"></div>
-      <div id="loading" class="note" style="margin-top:8px">loading...</div>
+      <div id="list" class="m3n4o5" role="list"></div>
+      <div id="loading" class="f8g9h0" style="margin-top:8px">loading...</div>
     </aside>
 
-    <section class="player">
-      <div class="info">
+    <section class="q3r4s5">
+      <div class="t6u7v8">
         <div style="display:flex;gap:12px;align-items:center">
           <img id="bigThumb" src="" alt="" style="width:64px;height:44px;border-radius:4px;object-fit:cover;background:#050505;border:1px solid rgba(255,255,255,0.02)"/>
           <div>
-            <div id="bigTitle" class="title">Select</div>
-            <div id="bigMeta" class="desc">Click to play.</div>
+            <div id="bigTitle" class="y5z6a7">Select</div>
+            <div id="bigMeta" class="w9x0y1">Click to run</div>
           </div>
         </div>
 
-        <div class="controls">
-          <button id="openNewTab" class="btn primary" style="display:none">open</button>
-          <button id="clear" class="btn">clear</button>
+        <div class="z2a3b4">
+          <button id="openNewTab" class="g7h8i9 j0k1l2" style="display:none">open</button>
+          <button id="clear" class="g7h8i9">clear</button>
         </div>
       </div>
 
-      <div class="frame-wrap" id="frameWrap">
+      <div class="c5d6e7" id="frameWrap">
         <iframe id="gameFrame" sandbox="allow-scripts allow-same-origin allow-forms" src=""></iframe>
 
         <div id="fallback" style="display:none;padding:20px;color:var(--muted);align-items:center;justify-content:center;display:flex;flex-direction:column;">
           <div style="font-size:16px;margin-bottom:10px;color:var(--text)">can't embed</div>
           <div style="margin-bottom:12px">open in a new tab.</div>
-          <a id="fallbackLink" class="btn primary" target="_blank" rel="noopener">open</a>
+          <a id="fallbackLink" class="g7h8i9 j0k1l2" target="_blank" rel="noopener">open</a>
         </div>
       </div>
     </section>
@@ -180,230 +180,232 @@
 
   <script>
     // URL to the raw JSON file in this repo
-    const GAMES_JSON_URL = 'https://raw.githubusercontent.com/MemeCake789/cyan-assets/main/games.json';
+    const _gk = 'https://raw.githubusercontent.com/MemeCake789/cyan-assets/main/games.json';
 
-    const listEl = document.getElementById('list');
-    const loadingEl = document.getElementById('loading');
-    const searchInput = document.getElementById('search');
-    const refreshBtn = document.getElementById('refresh');
+    const _lq = document.getElementById('list');
+    const _ld = document.getElementById('loading');
+    const _si = document.getElementById('search');
+    const _rb = document.getElementById('refresh');
 
-    const bigTitle = document.getElementById('bigTitle');
-    const bigMeta = document.getElementById('bigMeta');
-    const bigThumb = document.getElementById('bigThumb');
+    const _bt = document.getElementById('bigTitle');
+    const _bm = document.getElementById('bigMeta');
+    const _bth = document.getElementById('bigThumb');
 
-    const gameFrame = document.getElementById('gameFrame');
-    const frameWrap = document.getElementById('frameWrap');
-    const fallback = document.getElementById('fallback');
-    const fallbackLink = document.getElementById('fallbackLink');
-    const openNewTabBtn = document.getElementById('openNewTab');
-    const clearBtn = document.getElementById('clear');
+    const _gf = document.getElementById('gameFrame');
+    const _fw = document.getElementById('frameWrap');
+    const _fb = document.getElementById('fallback');
+    const _fl = document.getElementById('fallbackLink');
+    const _on = document.getElementById('openNewTab');
+    const _cb = document.getElementById('clear');
 
-    let games = [];
-    let visibleGames = []; // filtered list
-    let activeIndex = -1;
+    let _gs = [];
+    let _vg = []; // filtered list
+    let _ai = -1;
 
-    function isEmbeddable(url, item){
-      if(!url) return false;
+    function _xe(u, itm){
+      if(!u) return false;
       try{
-        const u = new URL(url, window.location.href);
-        const ext = (u.pathname.split('.').pop() || '').toLowerCase();
-        if(['html','htm','php','swf'].includes(ext)) return true;
-        if(url.startsWith('data:')) return true;
-        if(u.hostname.includes('vercel.app') || u.hostname.includes('github.io') || u.hostname.includes('netlify.app') || u.hostname.includes('jsdelivr.net')) return true;
-        if(item && item.type && item.type.toLowerCase() === 'html') return true;
+        const _u = new URL(u, window.location.href);
+        const _ext = (_u.pathname.split('.').pop() || '').toLowerCase();
+        if(['html','htm','php','swf'].includes(_ext)) return true;
+        if(u.startsWith('data:')) return true;
+        if(_u.hostname.includes('vercel.app') || _u.hostname.includes('github.io') || _u.hostname.includes('netlify.app') || _u.hostname.includes('jsdelivr.net')) return true;
+        if(itm && itm.type && itm.type.toLowerCase() === 'html') return true;
         return false;
       }catch(e){
         return false;
       }
     }
 
-    function statusClass(statusText){
-      if(!statusText) return '';
-      const s = statusText.toLowerCase();
-      if(s.includes('bug')) return 'status-bugged';
-      if(s.includes('broken')) return 'status-broken';
-      return 'status-working';
+    function _sc(txt){
+      if(!txt) return '';
+      const _s = txt.toLowerCase();
+      if(_s.includes('bug')) return 'k7l8m9';
+      if(_s.includes('broken')) return 'n0o1p2';
+      return 'h4i5j6';
     }
 
-    function createGameNode(item, index){
-      const root = document.createElement('div');
-      root.className = 'game';
-      root.role = 'listitem';
-      root.tabIndex = 0;
+    function _cgn(itm, ix){
+      const _root = document.createElement('div');
+      _root.className = 'p6q7r8';
+      _root.role = 'listitem';
+      _root.tabIndex = 0;
 
-      const thumb = document.createElement('div');
-      thumb.className = 'thumb';
-      const img = document.createElement('img');
-      img.alt = item.title || 'game';
-      img.loading = 'lazy';
-      img.onerror = () => { img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="120"><rect width="100%" height="100%" fill="%23070b07"/><text x="50%" y="50%" fill="%23ffffff" font-size="12" text-anchor="middle" dominant-baseline="central">no image</text></svg>'; };
-      img.src = item.imageSrc || '';
-      thumb.appendChild(img);
+      const _thumb = document.createElement('div');
+      _thumb.className = 's9t0u1';
+      const _img = document.createElement('img');
+      _img.alt = itm.title || 'game';
+      _img.loading = 'lazy';
+      _img.onerror = () => {
+        _img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="120"><rect width="100%" height="100%" fill="%23050"/><text x="50%" y="55%" font-size="14" fill="%23fff" text-anchor="middle">no image</text></svg>';
+      };
+      _img.src = itm.imageSrc || '';
+      _thumb.appendChild(_img);
 
-      const meta = document.createElement('div');
-      meta.className = 'meta';
-      const title = document.createElement('div');
-      title.className = 'title';
-      title.textContent = item.title || 'Untitled';
-      const line = document.createElement('div');
-      line.className = 'line';
-      const tag = document.createElement('div');
-      tag.className = 'tag';
-      tag.textContent = item.genre || (item.type || '');
-      const st = document.createElement('div');
-      st.style.marginLeft = 'auto';
-      st.className = statusClass((item.status && item.status[0]) || '');
-      st.textContent = (item.status && item.status[0]) || '';
+      const _meta = document.createElement('div');
+      _meta.className = 'v2w3x4';
+      const _title = document.createElement('div');
+      _title.className = 'y5z6a7';
+      _title.textContent = itm.title || 'Untitled';
+      const _line = document.createElement('div');
+      _line.className = 'b8c9d0';
+      const _tag = document.createElement('div');
+      _tag.className = 'e1f2g3';
+      _tag.textContent = itm.genre || (itm.type || '');
+      const _st = document.createElement('div');
+      _st.style.marginLeft = 'auto';
+      _st.className = _sc((itm.status && itm.status[0]) || '');
+      _st.textContent = (itm.status && itm.status[0]) || '';
 
-      line.appendChild(tag);
-      line.appendChild(st);
+      _line.appendChild(_tag);
+      _line.appendChild(_st);
 
-      meta.appendChild(title);
-      meta.appendChild(line);
+      _meta.appendChild(_title);
+      _meta.appendChild(_line);
 
-      root.appendChild(thumb);
-      root.appendChild(meta);
+      _root.appendChild(_thumb);
+      _root.appendChild(_meta);
 
-      function activate(){
-        setActive(index);
+      function _act(){
+        _sa(ix);
       }
-      root.addEventListener('click', activate);
-      root.addEventListener('keypress', (e) => { if(e.key === 'Enter') activate(); });
+      _root.addEventListener('click', _act);
+      _root.addEventListener('keypress', (e) => { if(e.key === 'Enter') _act(); });
 
-      return root;
+      return _root;
     }
 
-    function renderList(items){
-      visibleGames = items;
-      listEl.innerHTML = '';
+    function _rl(items){
+      _vg = items;
+      _lq.innerHTML = '';
       if(!items.length){
-        listEl.innerHTML = '<div class="note">no results.</div>';
+        _lq.innerHTML = '<div class="f8g9h0">no results.</div>';
         return;
       }
       items.forEach((it,idx) => {
-        const node = createGameNode(it, idx);
-        listEl.appendChild(node);
+        const _node = _cgn(it, idx);
+        _lq.appendChild(_node);
       });
-      if(activeIndex >= items.length) activeIndex = items.length - 1;
-      highlightActive();
+      if(_ai >= items.length) _ai = items.length - 1;
+      _ha();
     }
 
-    function highlightActive(){
-      const nodes = Array.from(listEl.children);
-      nodes.forEach((n,i)=>{
-        if(i === activeIndex){
-          n.classList.add('active');
+    function _ha(){
+      const _nodes = Array.from(_lq.children);
+      _nodes.forEach((n,i)=>{
+        if(i === _ai){
+          n.classList.add('l4m5n6');
           n.scrollIntoView({behavior:'smooth',block:'nearest'});
-        } else n.classList.remove('active');
+        } else n.classList.remove('l4m5n6');
       });
     }
 
-    function setActive(index){
-      activeIndex = index;
-      const item = visibleGames[index];
-      if(!item) return;
-      highlightActive();
-      bigTitle.textContent = item.title || 'Untitled';
-      bigMeta.textContent = (item.description || '') || (item.genre ? (' — ' + item.genre) : 'Click to play.');
-      bigThumb.src = item.imageSrc || '';
-      const url = item.link || '';
-      const embeddable = isEmbeddable(url, item);
+    function _sa(index){
+      _ai = index;
+      const _item = _vg[index];
+      if(!_item) return;
+      _ha();
+      _bt.textContent = _item.title || 'Untitled';
+      _bm.textContent = (_item.description || '') || (_item.genre ? (' — ' + _item.genre) : 'Click to play.');
+      _bth.src = _item.imageSrc || '';
+      const _url = _item.link || '';
+      const _emb = _xe(_url, _item);
 
-      fallback.style.display = 'none';
-      gameFrame.style.display = 'block';
-      openNewTabBtn.style.display = 'inline-block';
-      openNewTabBtn.onclick = () => { window.open(url, '_blank', 'noopener'); };
-      fallbackLink.href = url;
+      _fb.style.display = 'none';
+      _gf.style.display = 'block';
+      _on.style.display = 'inline-block';
+      _on.onclick = () => { window.open(_url, '_blank', 'noopener'); };
+      _fl.href = _url;
 
-      if(embeddable){
-        fallback.style.display = 'none';
-        gameFrame.style.display = 'block';
+      if(_emb){
+        _fb.style.display = 'none';
+        _gf.style.display = 'block';
         try{
-          gameFrame.src = url;
+          _gf.src = _url;
         }catch(e){
-          showFallback(url);
+          _sf(_url);
         }
       } else {
-        gameFrame.src = 'about:blank';
-        gameFrame.style.display = 'none';
-        fallback.style.display = 'flex';
-        fallbackLink.href = url;
-        openNewTabBtn.onclick = () => { window.open(url, '_blank', 'noopener'); };
+        _gf.src = 'about:blank';
+        _gf.style.display = 'none';
+        _fb.style.display = 'flex';
+        _fl.href = _url;
+        _on.onclick = () => { window.open(_url, '_blank', 'noopener'); };
       }
     }
 
-    function showFallback(url){
-      gameFrame.style.display = 'none';
-      fallback.style.display = 'flex';
-      fallbackLink.href = url;
+    function _sf(url){
+      _gf.style.display = 'none';
+      _fb.style.display = 'flex';
+      _fl.href = url;
     }
 
-    function clearSelection(){
-      activeIndex = -1;
-      highlightActive();
-      bigTitle.textContent = 'Select';
-      bigMeta.textContent = 'Click to play.';
-      bigThumb.src = '';
-      gameFrame.src = 'about:blank';
-      fallback.style.display = 'none';
-      gameFrame.style.display = 'block';
-      openNewTabBtn.style.display = 'none';
+    function _cs(){
+      _ai = -1;
+      _ha();
+      _bt.textContent = 'Select';
+      _bm.textContent = 'Click to play.';
+      _bth.src = '';
+      _gf.src = 'about:blank';
+      _fb.style.display = 'none';
+      _gf.style.display = 'block';
+      _on.style.display = 'none';
     }
 
-    function loadGames(){
-      loadingEl.style.display = 'block';
-      listEl.innerHTML = '';
-      fetch(GAMES_JSON_URL)
+    function _lg(){
+      _ld.style.display = 'block';
+      _lq.innerHTML = '';
+      fetch(_gk)
         .then(r => {
           if(!r.ok) throw new Error('Failed to fetch games.json ('+r.status+')');
           return r.json();
         })
         .then(data => {
           if(!data || !Array.isArray(data.games)) throw new Error('Invalid games.json format');
-          games = data.games;
-          loadingEl.style.display = 'none';
-          applyFilter();
+          _gs = data.games;
+          _ld.style.display = 'none';
+          _af();
         })
         .catch(err => {
           console.error(err);
-          loadingEl.textContent = 'failed.';
+          _ld.textContent = 'failed.';
         });
     }
 
-    function applyFilter(){
-      const q = (searchInput.value || '').trim().toLowerCase();
-      if(!q){
-        renderList(games);
+    function _af(){
+      const _q = (_si.value || '').trim().toLowerCase();
+      if(!_q){
+        _rl(_gs);
         return;
       }
-      const filtered = games.filter(g=>{
-        return (g.title||'').toLowerCase().includes(q) ||
-               (g.genre||'').toLowerCase().includes(q) ||
-               (g.type||'').toLowerCase().includes(q);
+      const _filtered = _gs.filter(g=>{
+        return (g.title||'').toLowerCase().includes(_q) ||
+               (g.genre||'').toLowerCase().includes(_q) ||
+               (g.type||'').toLowerCase().includes(_q);
       });
-      renderList(filtered);
+      _rl(_filtered);
     }
 
     // events
-    searchInput.addEventListener('input', applyFilter);
-    refreshBtn.addEventListener('click', ()=>{ loadGames(); });
-    clearBtn.addEventListener('click', clearSelection);
+    _si.addEventListener('input', _af);
+    _rb.addEventListener('click', ()=>{ _lg(); });
+    _cb.addEventListener('click', _cs);
 
     // initial load
-    loadGames();
+    _lg();
 
     // keyboard navigation (up/down through visibleGames)
     document.addEventListener('keydown', (e)=>{
       if(!['ArrowUp','ArrowDown','Enter'].includes(e.key)) return;
-      const visibleCount = visibleGames.length;
-      if(!visibleCount) return;
+      const _visibleCount = _vg.length;
+      if(!_visibleCount) return;
       if(e.key === 'ArrowDown'){
-        activeIndex = (activeIndex < visibleCount - 1) ? activeIndex + 1 : visibleCount - 1;
-        setActive(activeIndex);
+        _ai = (_ai < _visibleCount - 1) ? _ai + 1 : _visibleCount - 1;
+        _sa(_ai);
         e.preventDefault();
       } else if(e.key === 'ArrowUp'){
-        activeIndex = (activeIndex > 0) ? activeIndex - 1 : 0;
-        setActive(activeIndex);
+        _ai = (_ai > 0) ? _ai - 1 : 0;
+        _sa(_ai);
         e.preventDefault();
       }
     });
