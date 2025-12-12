@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title> — </title>
+  <title>cyanide — games</title>
   <style>
     /* Black & white monochrome theme */
     :root{
@@ -136,12 +136,12 @@
 <body>
   <header>
     <h1>cyanide</h1>
-    <div class="sub">g</div>
+    <div class="sub">games</div>
   </header>
 
   <main>
     <aside class="sidebar" aria-label="Game list">
-      <div class="prompt">> g</div>
+      <div class="prompt">> games</div>
       <div class="search">
         <input id="search" placeholder="search..." />
         <button id="refresh" class="btn" title="Refresh">⟳</button>
@@ -180,7 +180,7 @@
 
   <script>
     // URL to the raw JSON file in this repo
-    const g_JSON_URL = 'https://raw.githubusercontent.com/MemeCake789/cyan-assets/main/g.json';
+    const GAMES_JSON_URL = 'https://raw.githubusercontent.com/MemeCake789/cyan-assets/main/games.json';
 
     const listEl = document.getElementById('list');
     const loadingEl = document.getElementById('loading');
@@ -198,8 +198,8 @@
     const openNewTabBtn = document.getElementById('openNewTab');
     const clearBtn = document.getElementById('clear');
 
-    let g = [];
-    let visibleg = []; // filtered list
+    let games = [];
+    let visibleGames = []; // filtered list
     let activeIndex = -1;
 
     function isEmbeddable(url, item){
@@ -274,7 +274,7 @@
     }
 
     function renderList(items){
-      visibleg = items;
+      visibleGames = items;
       listEl.innerHTML = '';
       if(!items.length){
         listEl.innerHTML = '<div class="note">no results.</div>';
@@ -300,7 +300,7 @@
 
     function setActive(index){
       activeIndex = index;
-      const item = visibleg[index];
+      const item = visibleGames[index];
       if(!item) return;
       highlightActive();
       bigTitle.textContent = item.title || 'Untitled';
@@ -312,10 +312,8 @@
       fallback.style.display = 'none';
       gameFrame.style.display = 'block';
       openNewTabBtn.style.display = 'inline-block';
-      // new behavior: open in a new about:blank window and inject a permissive wrapper when possible
-      openNewTabBtn.onclick = () => { openInNewAboutBlank(url, embeddable); };
-      // fallback link uses same method
-      fallbackLink.onclick = (e) => { e.preventDefault(); openInNewAboutBlank(url, embeddable); };
+      openNewTabBtn.onclick = () => { window.open(url, '_blank', 'noopener'); };
+      fallbackLink.href = url;
 
       if(embeddable){
         fallback.style.display = 'none';
@@ -330,7 +328,7 @@
         gameFrame.style.display = 'none';
         fallback.style.display = 'flex';
         fallbackLink.href = url;
-        openNewTabBtn.onclick = () => { openInNewAboutBlank(url, embeddable); };
+        openNewTabBtn.onclick = () => { window.open(url, '_blank', 'noopener'); };
       }
     }
 
@@ -352,81 +350,17 @@
       openNewTabBtn.style.display = 'none';
     }
 
-    /**
-     * Open target URL in a new about:blank window.
-     * This safer wrapper avoids inline template interpolation inside the inner script
-     * by injecting a JSON-stringified constant and using it inside the wrapper scripts.
-     *
-     * Note: client-side code cannot override server-side response headers such as
-     * X-Frame-Options or remote CSP frame-ancestors — if the remote host forbids framing,
-     * embedding will still fail. In that case we navigate the new tab directly.
-     */
-    function openInNewAboutBlank(url, embeddable){
-      try {
-        const w = window.open('about:blank', '_blank');
-        if(!w){
-          alert('Popup blocked. Allow popups for this site to open g.');
-          return;
-        }
-
-        // JSON-stringified safe URL for injection into wrapper scripts
-        const safeUrlJSON = JSON.stringify(url);
-        // attribute-escaped URL for use in iframe src attribute
-        const escapedAttrUrl = url.replace(/"/g, '&quot;');
-
-        if(embeddable){
-          // Build wrapper string without ${...} inside inner script; insert safeUrlJSON via concatenation
-          var wrapper = '<!doctype html>' +
-            '<html lang="en">' +
-            '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
-            '<meta http-equiv="Content-Security-Policy" content="default-src * \'unsafe-inline\' \'unsafe-eval\' data: blob:; connect-src *; img-src * data:; media-src * data:; frame-ancestors *;">' +
-            '<title>game</title>' +
-            '<style>html,body{height:100%;margin:0;background:#000;color:#fff;font-family:system-ui,Segoe UI,Roboto,Arial} .frame{position:fixed;inset:0;border:0;background:#000} .bar{position:fixed;left:8px;top:8px;z-index:999;padding:6px 8px;background:rgba(0,0,0,0.5);color:#fff;border-radius:6px;border:1px solid rgba(255,255,255,0.06);font-size:13px} a{color:#fff;text-decoration:none;padding-left:8px} iframe{width:100%;height:100%;border:0;display:block;background:#000}</style>' +
-            '</head><body>' +
-            '<div class="bar">loading... <a id="orig" target="_blank" rel="noopener">open original</a></div>' +
-            '<iframe id="g" class="frame" src="' + escapedAttrUrl + '" allow="fullscreen; autoplay; encrypted-media; gamepad; microphone; camera"></iframe>' +
-            '<script>' +
-              // Inject the safe URL as a JS constant
-              'const TARGET_URL = ' + safeUrlJSON + ';' +
-              'document.getElementById("orig").href = TARGET_URL;' +
-              'function tryFallback(){' +
-                'var iframe = document.getElementById("g");' +
-                'try{' +
-                  // If iframe is same-origin we could inspect; otherwise assume it's loading fine.
-                  'if(iframe && iframe.src && iframe.src.indexOf("about:blank") !== -1){ window.location.href = TARGET_URL; return; }' +
-                '}catch(e){ /* cross-origin: assume loading */ }' +
-                // As a secondary fallback, if after a short time the iframe still has no visible content, navigate.
-                'setTimeout(function(){ try{ if(iframe && (iframe.contentDocument && iframe.contentDocument.body && iframe.contentDocument.body.childElementCount === 0) && iframe.src.indexOf("about:blank") !== -1){ window.location.href = TARGET_URL; } }catch(e){ /* ignore cross-origin */ } }, 1200);' +
-              '}' +
-              // Run a quick check after small delay
-              'setTimeout(tryFallback, 600);' +
-            '</script>' +
-            '</body></html>';
-
-          w.document.open();
-          w.document.write(wrapper);
-          w.document.close();
-        } else {
-          // For non-embeddable resources, navigate the new tab directly.
-          w.location.href = url;
-        }
-      } catch (err) {
-        console.error('openInNewAboutBlank error', err);
-        alert('Failed to open new tab: ' + (err && err.message ? err.message : String(err)));
-      }
-    }
-
-    function loadg(){
+    function loadGames(){
       loadingEl.style.display = 'block';
       listEl.innerHTML = '';
-      fetch(g_JSON_URL)
+      fetch(GAMES_JSON_URL)
         .then(r => {
-          if(!r.ok) throw new Error('Failed to fetch g.json ('+r.status+')');
+          if(!r.ok) throw new Error('Failed to fetch games.json ('+r.status+')');
           return r.json();
         })
         .then(data => {
-          if(!data || !Array.isArray(data.g)) throw new Error('Invalid g.json format');
-          g = data.g;
+          if(!data || !Array.isArray(data.games)) throw new Error('Invalid games.json format');
+          games = data.games;
           loadingEl.style.display = 'none';
           applyFilter();
         })
@@ -439,10 +373,10 @@
     function applyFilter(){
       const q = (searchInput.value || '').trim().toLowerCase();
       if(!q){
-        renderList(g);
+        renderList(games);
         return;
       }
-      const filtered = g.filter(g=>{
+      const filtered = games.filter(g=>{
         return (g.title||'').toLowerCase().includes(q) ||
                (g.genre||'').toLowerCase().includes(q) ||
                (g.type||'').toLowerCase().includes(q);
@@ -452,16 +386,16 @@
 
     // events
     searchInput.addEventListener('input', applyFilter);
-    refreshBtn.addEventListener('click', ()=>{ loadg(); });
+    refreshBtn.addEventListener('click', ()=>{ loadGames(); });
     clearBtn.addEventListener('click', clearSelection);
 
     // initial load
-    loadg();
+    loadGames();
 
-    // keyboard navigation (up/down through visibleg)
+    // keyboard navigation (up/down through visibleGames)
     document.addEventListener('keydown', (e)=>{
       if(!['ArrowUp','ArrowDown','Enter'].includes(e.key)) return;
-      const visibleCount = visibleg.length;
+      const visibleCount = visibleGames.length;
       if(!visibleCount) return;
       if(e.key === 'ArrowDown'){
         activeIndex = (activeIndex < visibleCount - 1) ? activeIndex + 1 : visibleCount - 1;
