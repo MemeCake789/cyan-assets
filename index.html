@@ -312,8 +312,10 @@
       fallback.style.display = 'none';
       gameFrame.style.display = 'block';
       openNewTabBtn.style.display = 'inline-block';
-      openNewTabBtn.onclick = () => { window.open(url, '_blank', 'noopener'); };
-      fallbackLink.href = url;
+      // new behavior: open in a new about:blank window and inject a permissive wrapper when possible
+      openNewTabBtn.onclick = () => { openInNewAboutBlank(url, embeddable); };
+      // fallback link uses same method
+      fallbackLink.onclick = (e) => { e.preventDefault(); openInNewAboutBlank(url, embeddable); };
 
       if(embeddable){
         fallback.style.display = 'none';
@@ -328,7 +330,7 @@
         gameFrame.style.display = 'none';
         fallback.style.display = 'flex';
         fallbackLink.href = url;
-        openNewTabBtn.onclick = () => { window.open(url, '_blank', 'noopener'); };
+        openNewTabBtn.onclick = () => { openInNewAboutBlank(url, embeddable); };
       }
     }
 
@@ -348,6 +350,97 @@
       fallback.style.display = 'none';
       gameFrame.style.display = 'block';
       openNewTabBtn.style.display = 'none';
+    }
+
+    /**
+     * Open target URL in a new about:blank window.
+     * If embeddable === true, write a wrapper HTML into the about:blank tab that contains
+     * an iframe with permissive attributes and a broad Content-Security-Policy meta tag.
+     *
+     * Note: client-side cannot override server-side response headers such as
+     * X-Frame-Options or CSP/frame-ancestors — if the remote host forbids framing,
+     * embedding will still fail. In that case we fall back to directly navigating the new tab.
+     */
+    function openInNewAboutBlank(url, embeddable){
+      try {
+        const w = window.open('about:blank', '_blank');
+        if(!w){
+          alert('Popup blocked. Allow popups for this site to open games.');
+          return;
+        }
+
+        // If it's likely embeddable, inject a wrapper that embeds it in an iframe.
+        if(embeddable){
+          // Use JSON.stringify to safely escape the URL into the generated HTML.
+          const safeUrl = JSON.stringify(url);
+
+          const wrapper = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!--
+    A permissive CSP is provided here to allow the framed game to load scripts,
+    media and resources from other origins. This cannot override headers sent by the game host.
+  -->
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src *; img-src * data:; media-src * data:; frame-ancestors *;">
+  <title>game</title>
+  <style>
+    html,body{height:100%;margin:0;background:#000;color:#fff;font-family:system-ui,Segoe UI,Roboto,Arial}
+    .frame{position:fixed;inset:0;border:0;background:#000}
+    .bar{position:fixed;left:8px;top:8px;z-index:999;padding:6px 8px;background:rgba(0,0,0,0.5);color:#fff;border-radius:6px;border:1px solid rgba(255,255,255,0.06);font-size:13px}
+    a{color:#fff;text-decoration:none;padding-left:8px}
+    iframe{width:100%;height:100%;border:0;display:block;background:#000}
+  </style>
+</head>
+<body>
+  <div class="bar">loading... <a id="orig" target="_blank" rel="noopener">open original</a></div>
+  <iframe id="g" class="frame" src="` + url.replace(/"/g, '&quot;') + `" allow="fullscreen; autoplay; encrypted-media; gamepad; microphone; camera"></iframe>
+  <script>
+    // link to original URL (for direct navigation)
+    document.getElementById('orig').href = ${safeUrl};
+
+    // If the iframe is blocked by X-Frame-Options or frame-ancestors, navigate top-level to the URL.
+    function checkFrame(){
+      const iframe = document.getElementById('g');
+      try {
+        // try accessing iframe document; if cross-origin it will throw, which is expected.
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        // If we can access doc and it's about:blank, likely was blocked — navigate top level.
+        if(doc && (doc.documentElement && doc.documentElement.innerHTML.trim() === '')) {
+          // nothing; allow time for load
+        }
+      } catch(err){
+        // cross-origin - can't inspect, assume it's loading fine
+        return;
+      }
+    }
+
+    // after a short delay, if the iframe hasn't visibly loaded, attempt to navigate the tab directly.
+    setTimeout(function(){
+      const iframe = document.getElementById('g');
+      // if iframe failed to load and its src stays about:blank, navigate top-level
+      if(iframe && iframe.src && iframe.src.indexOf('about:blank') !== -1){
+        window.location.href = ${safeUrl};
+      }
+    }, 1500);
+  </script>
+</body>
+</html>`;
+
+          // write wrapper into about:blank tab
+          w.document.open();
+          w.document.write(wrapper);
+          w.document.close();
+        } else {
+          // For non-embeddable resources, directly navigate the new tab to the resource.
+          // This avoids framing restrictions and allows normal navigation (download, ROM, etc).
+          w.location.href = url;
+        }
+      } catch (err) {
+        console.error('openInNewAboutBlank error', err);
+        alert('Failed to open new tab: ' + err.message);
+      }
     }
 
     function loadGames(){
