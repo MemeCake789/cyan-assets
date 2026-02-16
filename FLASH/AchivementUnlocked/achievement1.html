@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Achievement Unlocked 1</title>
+        <style>
+            body,
+            html {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                background-color: #222; /* Dark background */
+            }
+            #ruffle-container {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="ruffle-container"></div>
+
+        <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+        <script>
+            window.RufflePlayer = window.RufflePlayer || {};
+            window.addEventListener("load", (event) => {
+                const ruffle = window.RufflePlayer.newest();
+                const player = ruffle.createPlayer();
+
+                const container = document.getElementById("ruffle-container");
+                container.appendChild(player);
+
+                player.style.width = "100%";
+                player.style.height = "100%";
+
+                player.load(
+                    "https://cdn.jsdelivr.net/gh/MemeCake789/cyan-assets@main/FLASH/AchivementUnlocked/achievement.swf",
+                );
+            });
+        </script>
+    </body>
+</html>
