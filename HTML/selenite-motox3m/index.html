@@ -6,36 +6,25 @@
     <title>Motox3m</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
-        html, body { height: 100%; width: 100%; overflow: hidden; background: #000; color: #fff; display: flex; align-items: center; justify-content: center; font-family: sans-serif; }
-        .loading { font-size: 1.2rem; letter-spacing: 2px; }
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+        iframe {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+            display: block;
+        }
     </style>
 </head>
 <body>
-    <div class="loading">LOADING Motox3m...</div>
-    <script>
-        (async () => {
-            const game = 'selenite-motox3m';
-            const rawBase = 'https://raw.githubusercontent.com/MemeCake789/cyan-games/main/' + game + '/';
-            try {
-                const response = await fetch(rawBase + 'index.html');
-                let html = await response.text();
-                
-                // Inject <base> tag to resolve all relative assets from GitHub
-                const baseTag = '<base href="' + rawBase + '">';
-                if (html.includes('<head>')) {
-                    html = html.replace('<head>', '<head>' + baseTag);
-                } else {
-                    html = baseTag + html;
-                }
-                
-                document.open();
-                document.write(html);
-                document.close();
-            } catch (e) {
-                console.error(e);
-                document.body.innerHTML = 'FAILED TO LOAD GAME. CHECK CONSOLE.';
-            }
-        })();
-    </script>
+    <iframe 
+        src="https://cdn.statically.io/gh/MemeCake789/cyan-games/main/selenite-motox3m/index.html" 
+        allowfullscreen 
+        allow="fullscreen">
+    </iframe>
 </body>
 </html>
