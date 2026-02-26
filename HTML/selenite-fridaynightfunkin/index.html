@@ -6,25 +6,36 @@
     <title>Fridaynightfunkin</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
-        html, body {
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            background: #000;
-        }
-        iframe {
-            width: 100vw;
-            height: 100vh;
-            border: none;
-            display: block;
-        }
+        html, body { height: 100%; width: 100%; overflow: hidden; background: #000; color: #fff; display: flex; align-items: center; justify-content: center; font-family: sans-serif; }
+        .loading { font-size: 1.2rem; letter-spacing: 2px; }
     </style>
 </head>
 <body>
-    <iframe 
-        src="https://raw.githack.com/MemeCake789/cyan-games/main/selenite-fridaynightfunkin/index.html" 
-        allowfullscreen 
-        allow="fullscreen">
-    </iframe>
+    <div class="loading">LOADING Fridaynightfunkin...</div>
+    <script>
+        (async () => {
+            const game = 'selenite-fridaynightfunkin';
+            const rawBase = 'https://raw.githubusercontent.com/MemeCake789/cyan-games/main/' + game + '/';
+            try {
+                const response = await fetch(rawBase + 'index.html');
+                let html = await response.text();
+                
+                // Inject <base> tag to resolve all relative assets from GitHub
+                const baseTag = '<base href="' + rawBase + '">';
+                if (html.includes('<head>')) {
+                    html = html.replace('<head>', '<head>' + baseTag);
+                } else {
+                    html = baseTag + html;
+                }
+                
+                document.open();
+                document.write(html);
+                document.close();
+            } catch (e) {
+                console.error(e);
+                document.body.innerHTML = 'FAILED TO LOAD GAME. CHECK CONSOLE.';
+            }
+        })();
+    </script>
 </body>
 </html>
