@@ -1,7 +1,7 @@
 import os
 
 # Configuration
-REPO_USER = "MemeCake789"
+REPO_USER = "sudonym-sudo"
 REPO_NAME = "cyan-games"
 BRANCH = "main"
 BASE_DIR = "/home/sand/cyan-assets/HTML"
