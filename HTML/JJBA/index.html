@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JoJo's Bizarre Adventure - PS1</title>
+  <base href="https://cdn.jsdelivr.net/gh/sudonym-sudo/cyan-games@main/JJBA/">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
+    canvas { display: block; width: 100vw; height: 100vh; image-rendering: pixelated; }
+    #loading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-family: monospace; z-index: 1000; }
+    #loading.hidden { display: none; }
+    #loading h1 { font-size: 2rem; margin-bottom: 2rem; text-shadow: 2px 2px 4px #ff00ff; }
+    #loading-text { font-size: 1rem; color: #aaa; }
+    #progress { width: 300px; height: 6px; background: #333; border-radius: 3px; margin-top: 1rem; overflow: hidden; }
+    #progress-bar { width: 0%; height: 100%; background: #ff00ff; transition: width 0.3s; }
+    .spinner { width: 50px; height: 50px; border: 3px solid #333; border-top: 3px solid #ff00ff; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1rem; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    #error { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: none; flex-direction: column; align-items: center; justify-content: center; color: #ff4444; font-family: monospace; z-index: 1000; padding: 2rem; text-align: center; }
+    #error.visible { display: flex; }
+    #error h2 { margin-bottom: 1rem; }
+    #error p { color: #aaa; max-width: 600px; }
+  </style>
+</head>
+<body>
+  <div id="loading">
+    <div class="spinner"></div>
+    <h1>JoJo's Bizarre Adventure</h1>
+    <div id="loading-text">Loading...</div>
+    <div id="progress"><div id="progress-bar"></div></div>
+  </div>
+  <div id="error">
+    <h2>STAND BY ME</h2>
+    <p id="error-message">Failed to load game.</p>
+  </div>
+  <canvas id="game-canvas"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/nostalgist@latest"></script>
+  <script>
+    const loadingText = document.getElementById('loading-text');
+    const progressBar = document.getElementById('progress-bar');
+    const loadingEl = document.getElementById('loading');
+    const errorEl = document.getElementById('error');
+    const errorMessage = document.getElementById('error-message');
+
+    const PART_DIR = 'game_parts';
+
+    function setLoadingText(text) { loadingText.textContent = text; }
+    function setProgress(pct) { progressBar.style.width = pct + '%'; }
+    function showError(msg) { loadingEl.classList.add('hidden'); errorEl.classList.add('visible'); if (msg) errorMessage.textContent = msg; }
+
+    async function fetchParts() {
+      const parts = [];
+      let partIndex = 0;
+      const letters = 'abcdefghijklmnopqrstuvwxyz';
+
+      while (true) {
+        const suffix = 'part_a' + letters[partIndex];
+        try {
+          const resp = await fetch(`${PART_DIR}/${suffix}`);
+          if (!resp.ok) break;
+          const buffer = await resp.arrayBuffer();
+          parts.push(buffer);
+          partIndex++;
+          setProgress((partIndex / 15) * 80);
+          setLoadingText(`Downloading part ${partIndex}...`);
+        } catch (e) {
+          break;
+        }
+      }
+
+      if (parts.length === 0) throw new Error('No game parts found');
+
+      setLoadingText('Assembling game file...');
+      setProgress(90);
+      const totalSize = parts.reduce((sum, p) => sum + p.byteLength, 0);
+      const combined = new Uint8Array(totalSize);
+      let offset = 0;
+      for (const part of parts) {
+        combined.set(new Uint8Array(part), offset);
+        offset += part.byteLength;
+      }
+
+      const blob = new Blob([combined], { type: 'application/octet-stream' });
+      setProgress(100);
+      return URL.createObjectURL(blob);
+    }
+
+    async function loadGame() {
+      try {
+        setLoadingText('Fetching game parts...');
+        const gameUrl = await fetchParts();
+        
+        setLoadingText('Starting emulator...');
+
+        await Nostalgist.launch({
+          core: 'pcsx_rearmed',
+          rom: gameUrl,
+          canvas: document.getElementById('game-canvas')
+        });
+
+        loadingEl.classList.add('hidden');
+      } catch (error) {
+        console.error('Failed to load game:', error);
+        showError('Failed to load game: ' + error.message);
+      }
+    }
+
+    window.addEventListener('load', loadGame);
+  </script>
+</body>
+</html>
